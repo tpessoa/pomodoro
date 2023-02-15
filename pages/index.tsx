@@ -119,7 +119,10 @@ const Home: NextPage = () => {
         </Tab.Group>
       </div>
       <div className="relative w-full flex justify-center my-24 ">
-        <svg className="w-80 h-80 z-50" viewBox={`0 0 ${size} ${size}`}>
+        <svg
+          className="w-80 h-80 z-50 -rotate-90"
+          viewBox={`0 0 ${size} ${size}`}
+        >
           <circle
             className="text-rose-400/90"
             cx="50%"
