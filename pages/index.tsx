@@ -20,7 +20,7 @@ const Home: NextPage = () => {
 
   const counterTimeInput = 20;
   const timeMetric = 1000; // 1 second
-  const timer = useRef(null);
+  const timer = useRef<any>(null);
 
   const resetCountDownTimer = () => {
     setCurrentTimer("00:00");
