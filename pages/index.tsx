@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Tab } from "@headlessui/react";
 import { RiSettings4Fill } from "react-icons/ri";
 import { MdOutlineClose } from "react-icons/md";
@@ -7,7 +7,7 @@ import Modal from "react-modal";
 import InputNumber from "../components/InputNumber";
 import { Formik, Form, FormikHelpers, FormikProps } from "formik";
 import CountDownTimer from "../components/CountDownTimer";
-import { formatClockTimer, getTimeleft } from "../utils/utils";
+import TabButton from "../components/TabButton";
 
 Modal.setAppElement("#pomodoro");
 
@@ -64,45 +64,18 @@ const Home: NextPage = () => {
       <div className="w-full flex justify-center items-center">
         <Tab.Group onChange={(index) => setTabOption(index)}>
           <Tab.List className="bg-gray-900/60 p-2 rounded-full flex">
-            <Tab as={Fragment}>
-              {({ selected }) => (
-                <button
-                  className={`font-bold text-sm py-4 px-8 rounded-full focus:outline-none ${
-                    selected ? "bg-rose-400/90 text-gray-800" : "text-gray-500"
-                  }`}
-                >
-                  pomodoro
-                </button>
-              )}
-            </Tab>
-            <Tab as={Fragment}>
-              {({ selected }) => (
-                <button
-                  className={`font-bold text-sm py-3 px-6 rounded-full focus:outline-none ${
-                    selected ? "bg-rose-400/90 text-gray-800" : "text-gray-500"
-                  }`}
-                >
-                  short break
-                </button>
-              )}
-            </Tab>
-            <Tab as={Fragment}>
-              {({ selected }) => (
-                <button
-                  className={`font-bold text-sm py-3 px-6 rounded-full focus:outline-none ${
-                    selected ? "bg-rose-400/90 text-gray-800" : "text-gray-500"
-                  }`}
-                >
-                  long break
-                </button>
-              )}
-            </Tab>
+            <TabButton label="pomodoro" />
+            <TabButton label="short break" />
+            <TabButton label="long break" />
           </Tab.List>
         </Tab.Group>
       </div>
       <CountDownTimer initialClockTimer={getCurrentClockTimer(tabOption)} />
       <div className="w-full flex justify-center">
-        <button className="w-12 h-12" onClick={() => setIsOpen(true)}>
+        <button
+          className="w-10 h-10 md:w-12 md:h-12"
+          onClick={() => setIsOpen(true)}
+        >
           <RiSettings4Fill className="w-full h-full text-gray-500" />
         </button>
       </div>

@@ -70,13 +70,13 @@ const CountDownTimer = ({ initialClockTimer }: CountDownTimerProps) => {
       return;
     }
 
-    const countDownDate = new Date().setMilliseconds(
-      new Date().getMilliseconds() + initialClockTimer
+    const countDownDate = new Date().setSeconds(
+      new Date().getSeconds() + initialClockTimer / 1000
     );
     const initalTotalTime = countDownDate - new Date().getTime();
 
-    const countDownDateWithElapsedTime = new Date().setMilliseconds(
-      new Date().getMilliseconds() + initialClockTimer - getElapsedTime()
+    const countDownDateWithElapsedTime = new Date().setSeconds(
+      new Date().getSeconds() + initialClockTimer / 1000 - getElapsedTime()
     );
 
     timer.current = setInterval(
@@ -98,7 +98,7 @@ const CountDownTimer = ({ initialClockTimer }: CountDownTimerProps) => {
   return (
     <div className="relative w-full flex justify-center my-24 ">
       <svg
-        className="w-80 h-80 z-20 -rotate-90"
+        className="w-64 h-64 md:w-80 md:h-80 z-20 -rotate-90"
         viewBox={`0 0 ${size} ${size}`}
       >
         <circle
@@ -114,28 +114,28 @@ const CountDownTimer = ({ initialClockTimer }: CountDownTimerProps) => {
           fill="transparent"
         />
       </svg>
-      <div className="absolute text-7xl font-semibold top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-200 z-20 tracking-tight">
+      <div className="absolute text-6xl md:text-7xl font-semibold top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-200 z-20 tracking-tight">
         {currentTimer}
       </div>
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 z-20 ">
-        <button
-          onClick={() => (counterPaused ? startTimer() : pauseTimer())}
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 md:w-80 md:h-80 z-20 ">
+        <div
           className="flex items-end justify-center w-full"
           style={{ height: "80%" }}
         >
-          <span
-            className="text-gray-200 text-ll uppercase text-center"
+          <button
+            onClick={() => (counterPaused ? startTimer() : pauseTimer())}
+            className="text-gray-200 text-xs md:text-lg uppercase text-center"
             style={{
               letterSpacing: "1rem",
               marginRight: "-1rem",
             }}
           >
             {counterPaused ? "Start" : "Pause"}
-          </span>
-        </button>
+          </button>
+        </div>
       </div>
-      <div className="absolute text-6xl font-bold top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 border-gray-900 w-80 h-80 border-8 rounded-full z-10"></div>
-      <div className="absolute font-bold top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-gray-800/40 via-gray-900/40 to-gray-900 w-96 h-96 rounded-full z-0"></div>
+      <div className="absolute text-6xl font-bold top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 border-gray-900 w-64 h-64 md:w-80 md:h-80 border-8 rounded-full z-10"></div>
+      <div className="absolute font-bold top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-gray-800/40 via-gray-900/40 to-gray-900 w-72 h-72 md:w-96 md:h-96 rounded-full z-0"></div>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { FormikProps, useField } from "formik";
+import { useField } from "formik";
 import React from "react";
 
 type InputNumberProps = {
