@@ -57,7 +57,11 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="bg-dark-purple h-screen font-sans" id="pomodoro">
+    <div
+      className="bg-dark-purple font-sans"
+      id="pomodoro"
+      style={{ minHeight: "100dvh" }}
+    >
       <h1 className="text-center text-gray-200 text-3xl font-semibold py-12">
         pomodoro
       </h1>
@@ -114,7 +118,7 @@ const Home: NextPage = () => {
                   </button>
                 </div>
                 <div className="flex-col items-center px-8 pt-4 pb-8">
-                  <div className="uppercase font-bold tracking-widest text-md">
+                  <div className="uppercase font-bold tracking-widest text-md text-center md:text-left">
                     Time (minutes)
                   </div>
                   <div className="flex-row md:flex my-4 justify-between">

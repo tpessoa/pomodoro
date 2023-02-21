@@ -14,7 +14,6 @@ const CountDownTimer = ({ initialClockTimer }: CountDownTimerProps) => {
   useEffect(() => {
     resetCountDownTimer();
     setCurrentTimer(formatClockTimer(initialClockTimer));
-    console.log(initialClockTimer, formatClockTimer(initialClockTimer));
   }, [initialClockTimer]);
 
   const strokeWidth = 4;
@@ -43,11 +42,6 @@ const CountDownTimer = ({ initialClockTimer }: CountDownTimerProps) => {
       Math.round((date - new Date().getTime()) / timeMetric) * timeMetric;
     setCurrentTimer(formatClockTimer(timeleft));
     setElapsedTime((previousValue) => previousValue + 1);
-
-    // console.log(new Date(date).toLocaleTimeString());
-    // console.log(formatClockTimer(timeleft));
-
-    // console.log(formatClockTimer(timeleft));
 
     if (timeleft <= 0) {
       resetCountDownTimer();
@@ -84,8 +78,6 @@ const CountDownTimer = ({ initialClockTimer }: CountDownTimerProps) => {
         refreshCountDownTimer(countDownDateWithElapsedTime, initalTotalTime),
       timeMetric
     );
-
-    console.log(new Date(countDownDateWithElapsedTime).toLocaleTimeString());
   };
 
   const pauseTimer = () => {
