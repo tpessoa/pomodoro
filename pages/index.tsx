@@ -18,7 +18,7 @@ export type FormTimers = {
 };
 
 const Home: NextPage = () => {
-  const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [timers, setTimers] = useState<FormTimers | null>(null);
   const [tabOption, setTabOption] = useState<number>(0);
 
@@ -51,6 +51,14 @@ const Home: NextPage = () => {
     setTimers(JSON.parse(localStorage.getItem("timers")!));
   }, []);
 
+  useEffect(() => {
+    if (modalIsOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [modalIsOpen]);
+
   const updateTimersOnLocalStorage = (values: FormTimers) => {
     setTimers(values);
     localStorage.setItem("timers", JSON.stringify(values));
@@ -58,7 +66,7 @@ const Home: NextPage = () => {
 
   return (
     <div
-      className="bg-dark-purple font-sans"
+      className="bg-dark-purple font-sans overflow-y-hidden"
       id="pomodoro"
       style={{ minHeight: "100dvh" }}
     >
@@ -78,14 +86,14 @@ const Home: NextPage = () => {
       <div className="w-full flex justify-center">
         <button
           className="w-10 h-10 md:w-12 md:h-12"
-          onClick={() => setIsOpen(true)}
+          onClick={() => setModalIsOpen(true)}
         >
           <RiSettings4Fill className="w-full h-full text-gray-500" />
         </button>
       </div>
       <Modal
         isOpen={modalIsOpen}
-        onRequestClose={() => setIsOpen(false)}
+        onRequestClose={() => setModalIsOpen(false)}
         className="w-full md:w-auto bg-stone-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-2xl"
         style={{
           overlay: { zIndex: 30, backgroundColor: "transparent" },
@@ -104,7 +112,7 @@ const Home: NextPage = () => {
             ) => {
               updateTimersOnLocalStorage(values);
               setSubmitting(true);
-              setIsOpen(false);
+              setModalIsOpen(false);
             }}
           >
             {(props: FormikProps<FormTimers>) => (
