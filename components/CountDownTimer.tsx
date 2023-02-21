@@ -1,15 +1,21 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { formatClockTimer } from "../utils/utils";
 
 type CountDownTimerProps = {
-  resetCountDownTimer: () => void;
+  initialClockTimer: number;
 };
 
-const CountDownTimer = ({}: CountDownTimerProps) => {
+const CountDownTimer = ({ initialClockTimer }: CountDownTimerProps) => {
   const [progress, setProgress] = useState<number>(100);
-  const [currentTimer, setCurrentTimer] = useState<string>("00:00");
+  const [currentTimer, setCurrentTimer] = useState<string>();
   const [counterPaused, setCounterPaused] = useState<boolean>(true);
   const [elapsedTime, setElapsedTime] = useState<number>(0);
+
+  useEffect(() => {
+    resetCountDownTimer();
+    setCurrentTimer(formatClockTimer(initialClockTimer));
+    console.log(initialClockTimer, formatClockTimer(initialClockTimer));
+  }, [initialClockTimer]);
 
   const strokeWidth = 4;
   const size = 100;
@@ -17,53 +23,69 @@ const CountDownTimer = ({}: CountDownTimerProps) => {
   const arcLength = 2 * Math.PI * radius;
   const arcOffset = arcLength * ((100 - progress) / 100);
 
-  const counterTimeInput = 20;
   const timeMetric = 1000; // 1 second
   const timer = useRef<any>(null);
 
+  const getElapsedTime = () => {
+    return elapsedTime;
+  };
+
   const resetCountDownTimer = () => {
+    clearInterval(timer.current);
+    setCounterPaused(true);
     setCurrentTimer("00:00");
     setProgress(100);
     setElapsedTime(0);
-    setCounterPaused(true);
   };
 
-  const refreshCountDownTimer = (date: number, initalTimeLeft: number) => {
+  const refreshCountDownTimer = (date: number, initalTotalTime: number) => {
     const timeleft =
       Math.round((date - new Date().getTime()) / timeMetric) * timeMetric;
-
     setCurrentTimer(formatClockTimer(timeleft));
     setElapsedTime((previousValue) => previousValue + 1);
 
+    // console.log(new Date(date).toLocaleTimeString());
+    // console.log(formatClockTimer(timeleft));
+
+    // console.log(formatClockTimer(timeleft));
+
     if (timeleft <= 0) {
-      clearInterval(timer.current);
       resetCountDownTimer();
     } else {
-      setProgress((timeleft * 100) / initalTimeLeft);
+      setProgress((timeleft * 100) / initalTotalTime);
     }
   };
 
   const startTimer = () => {
     // console.log("Timer starting...");
+
+    if (isNaN(initialClockTimer)) {
+      return;
+    }
+
     setCounterPaused(false);
 
-    if (elapsedTime >= counterTimeInput) {
+    if (getElapsedTime() >= initialClockTimer) {
       resetCountDownTimer();
       return;
     }
 
-    const countDownDate = new Date().setSeconds(
-      new Date().getSeconds() + counterTimeInput
+    const countDownDate = new Date().setMilliseconds(
+      new Date().getMilliseconds() + initialClockTimer
     );
-    const countDownDateWithElapsedTime = new Date().setSeconds(
-      new Date().getSeconds() + counterTimeInput - elapsedTime
+    const initalTotalTime = countDownDate - new Date().getTime();
+
+    const countDownDateWithElapsedTime = new Date().setMilliseconds(
+      new Date().getMilliseconds() + initialClockTimer - getElapsedTime()
     );
 
-    const initalTimeLeft = countDownDate - new Date().getTime();
     timer.current = setInterval(
-      () => refreshCountDownTimer(countDownDateWithElapsedTime, initalTimeLeft),
+      () =>
+        refreshCountDownTimer(countDownDateWithElapsedTime, initalTotalTime),
       timeMetric
     );
+
+    console.log(new Date(countDownDateWithElapsedTime).toLocaleTimeString());
   };
 
   const pauseTimer = () => {

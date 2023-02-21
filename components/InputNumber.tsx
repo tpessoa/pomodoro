@@ -1,6 +1,5 @@
 import { FormikProps, useField } from "formik";
 import React from "react";
-import { FormTimers } from "../pages";
 
 type InputNumberProps = {
   label: string;

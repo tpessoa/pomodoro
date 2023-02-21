@@ -7,6 +7,7 @@ import Modal from "react-modal";
 import InputNumber from "../components/InputNumber";
 import { Formik, Form, FormikHelpers, FormikProps } from "formik";
 import CountDownTimer from "../components/CountDownTimer";
+import { formatClockTimer, getTimeleft } from "../utils/utils";
 
 Modal.setAppElement("#pomodoro");
 
@@ -17,15 +18,25 @@ export type FormTimers = {
 };
 
 const Home: NextPage = () => {
-  const [modalIsOpen, setIsOpen] = useState(false);
+  const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const [timers, setTimers] = useState<FormTimers | null>(null);
+  const [tabOption, setTabOption] = useState<number>(0);
 
-  // We listen to the resize event
-  window.addEventListener("resize", () => {
-    // We execute the same script as before
-    let vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty("--vh", `${vh}px`);
-  });
+  const getCurrentClockTimer = (index: number) => {
+    let clockTimer = 0;
+    switch (index) {
+      case 0:
+        clockTimer = timers?.pomodoro!;
+        break;
+      case 1:
+        clockTimer = timers?.shortBreak!;
+        break;
+      case 2:
+        clockTimer = timers?.longBreak!;
+        break;
+    }
+    return clockTimer * 60 * 1000;
+  };
 
   useEffect(() => {
     // set default timers if they doesn't exist
@@ -51,7 +62,7 @@ const Home: NextPage = () => {
         pomodoro
       </h1>
       <div className="w-full flex justify-center items-center">
-        <Tab.Group>
+        <Tab.Group onChange={(index) => setTabOption(index)}>
           <Tab.List className="bg-gray-900/60 p-2 rounded-full flex">
             <Tab as={Fragment}>
               {({ selected }) => (
@@ -89,7 +100,7 @@ const Home: NextPage = () => {
           </Tab.List>
         </Tab.Group>
       </div>
-      <CountDownTimer />
+      <CountDownTimer initialClockTimer={getCurrentClockTimer(tabOption)} />
       <div className="w-full flex justify-center">
         <button className="w-12 h-12" onClick={() => setIsOpen(true)}>
           <RiSettings4Fill className="w-full h-full text-gray-500" />
